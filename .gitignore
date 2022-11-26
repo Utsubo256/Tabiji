@@ -10,7 +10,7 @@
 
 # api
 # Ignore bundler config.
-/.bundle
+api/.bundle
 
 # Ignore all logfiles and tempfiles.
 api/log/*
