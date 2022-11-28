@@ -36,4 +36,22 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:email]).to include("is too long (maximum is 255 characters)")
   end
+
+  it 'is valid with the valid email address format' do
+    user = FactoryBot.build(:user)
+    valid_addresses = %w[alice@example.com BOB@aaa.BBB Carol_Carlos-CHARLIE@aaa.bbb.ccc Dave.erin@foo.bar frank+grace@xxx.jp]
+    valid_addresses.each do |valid_address|
+      user.email = valid_address
+      expect(user).to be_valid
+    end
+  end
+
+  it 'is invalid with the invalid email address format' do
+    user = FactoryBot.build(:user)
+    invalid_addresses = %w[user@example,com user_at_foo.org user.name@example. foo@bar_baz.com foo@bar+baz.com]
+    invalid_addresses.each do |invalid_address|
+      user.email = invalid_address
+      expect(user).to_not be_valid
+    end
+  end
 end
