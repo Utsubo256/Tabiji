@@ -11,6 +11,16 @@ RSpec.describe User, type: :model do
     expect(user.errors[:name]).to include("can't be blank")
   end
 
+  it 'is valid with a name including 15 characters or less' do
+    expect(FactoryBot.build(:user, name: "a" * 15)).to be_valid
+  end
+
+  it 'is invalid with a name including 16 characters or more' do
+    user = FactoryBot.build(:user, name: "a" * 16)
+    user.valid?
+    expect(user.errors[:name]).to include("is too long (maximum is 15 characters)")
+  end
+
   it 'is invalid without an email address' do
     user = FactoryBot.build(:user, email: nil)
     user.valid?
