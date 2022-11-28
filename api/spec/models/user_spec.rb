@@ -26,4 +26,14 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:email]).to include("can't be blank")
   end
+
+  it 'is valid with an email address including 255 or less' do
+    user = FactoryBot.build(:user, email: "a" * 243 + "@example.com")
+  end
+
+  it 'is invalid with an email address including 256 or more' do
+    user = FactoryBot.build(:user, email: "a" * 244 + "@example.com")
+    user.valid?
+    expect(user.errors[:email]).to include("is too long (maximum is 255 characters)")
+  end
 end
