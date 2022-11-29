@@ -54,4 +54,13 @@ RSpec.describe User, type: :model do
       expect(user).to_not be_valid
     end
   end
+
+  it 'is invalid with a duplicate email address' do
+    user = FactoryBot.build(:user)
+    duplicate_user = user.dup
+    duplicate_user.email = user.email.upcase
+    user.save
+    duplicate_user.valid?
+    expect(duplicate_user.errors[:email]).to include("has already been taken")
+  end
 end
