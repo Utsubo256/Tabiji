@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it 'has a valid factory' do
+  it 'is valid with a name, email, password, and password_confirmation' do
     expect(FactoryBot.build(:user)).to be_valid
   end
 
@@ -69,5 +69,48 @@ RSpec.describe User, type: :model do
     user.email = mixed_case_email
     user.save
     expect(mixed_case_email.downcase).to eq user.reload.email
+  end
+
+  it 'is invalid with a blank password' do
+    user = FactoryBot.build(:user)
+    user.password = user.password_confirmation = ' ' * 6
+    user.valid?
+    expect(user.errors[:password]).to include("can't be blank")
+  end
+
+  it 'is invalid with the password including 5 characters or less' do
+    user = FactoryBot.build(:user)
+    user.password = user.password_confirmation = 'a' * 5
+    user.valid?
+    expect(user.errors[:password]).to include("is too short (minimum is 6 characters)")
+  end
+
+  it 'is valid with the password including 6 characters' do
+    user = FactoryBot.build(:user)
+    user.password = user.password_confirmation = 'a' * 6
+    user.valid?
+    expect(user).to be_valid
+  end
+
+  it 'is valid with the password including 72 characters' do
+    user = FactoryBot.build(:user)
+    user.password = user.password_confirmation = 'a' * 72
+    user.valid?
+    expect(user).to be_valid
+  end
+
+  it 'is invalid with the password including 73 characters or more' do
+    user = FactoryBot.build(:user)
+    user.password = user.password_confirmation = 'a' * 73
+    user.valid?
+    expect(user.errors[:password]).to include("is too long (maximum is 72 characters)")
+  end
+
+  it "is invalid when the password doesn't matches the password_confirmation" do
+    user = FactoryBot.build(:user)
+    user.password = "foobar"
+    user.password_confirmation = "foobarbaz"
+    user.valid?
+    expect(user.errors[:password_confirmation]).to include("doesn't match Password")
   end
 end
