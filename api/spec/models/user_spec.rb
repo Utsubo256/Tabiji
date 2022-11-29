@@ -71,6 +71,20 @@ RSpec.describe User, type: :model do
     expect(mixed_case_email.downcase).to eq user.reload.email
   end
 
+  it 'is valid with the introduction including 255 characters or less' do
+    user = FactoryBot.build(:user)
+    user.introduction = 'a' * 255
+    user.valid?
+    expect(user).to be_valid
+  end
+
+  it 'is invalid with the introduction including 256 characters or more' do
+    user = FactoryBot.build(:user)
+    user.introduction = 'a' * 256
+    user.valid?
+    expect(user.errors[:introduction]).to include("is too long (maximum is 255 characters)")
+  end
+
   it 'is invalid with a blank password' do
     user = FactoryBot.build(:user)
     user.password = user.password_confirmation = ' ' * 6
