@@ -14,14 +14,14 @@ RSpec.describe User, type: :model do
   end
 
   it 'is valid with a name including 15 characters or less' do
-    user.name = "a" * 15
+    user.name = 'a' * 15
     expect(user).to be_valid
   end
 
   it 'is invalid with a name including 16 characters or more' do
-    user.name = "a" * 16
+    user.name = 'a' * 16
     user.valid?
-    expect(user.errors[:name]).to include("is too long (maximum is 15 characters)")
+    expect(user.errors[:name]).to include('is too long (maximum is 15 characters)')
   end
 
   it 'is invalid without an email address' do
@@ -31,15 +31,15 @@ RSpec.describe User, type: :model do
   end
 
   it 'is valid with an email address including 255 or less' do
-    user.email = "a" * 243 + "@example.com"
+    user.email = "#{'a' * 243}@example.com"
     user.valid?
     expect(user).to be_valid
   end
 
   it 'is invalid with an email address including 256 or more' do
-    user.email = "a" * 244 + "@example.com"
+    user.email = "#{'a' * 244}@example.com"
     user.valid?
-    expect(user.errors[:email]).to include("is too long (maximum is 255 characters)")
+    expect(user.errors[:email]).to include('is too long (maximum is 255 characters)')
   end
 
   it 'is valid with the valid email address format' do
@@ -62,11 +62,11 @@ RSpec.describe User, type: :model do
     duplicate_user = user.dup
     user.save
     duplicate_user.valid?
-    expect(duplicate_user.errors[:email]).to include("has already been taken")
+    expect(duplicate_user.errors[:email]).to include('has already been taken')
   end
 
   it 'is valid with the email address saved as lowercase' do
-    mixed_case_email = "Alice@ExaMplE.cOM"
+    mixed_case_email = 'Alice@ExaMplE.cOM'
     user.email = mixed_case_email
     user.save
     expect(mixed_case_email.downcase).to eq user.reload.email
@@ -81,7 +81,7 @@ RSpec.describe User, type: :model do
   it 'is invalid with the introduction including 256 characters or more' do
     user.introduction = 'a' * 256
     user.valid?
-    expect(user.errors[:introduction]).to include("is too long (maximum is 255 characters)")
+    expect(user.errors[:introduction]).to include('is too long (maximum is 255 characters)')
   end
 
   it 'is invalid with a blank password' do
@@ -93,7 +93,7 @@ RSpec.describe User, type: :model do
   it 'is invalid with the password including 5 characters or less' do
     user.password = user.password_confirmation = 'a' * 5
     user.valid?
-    expect(user.errors[:password]).to include("is too short (minimum is 6 characters)")
+    expect(user.errors[:password]).to include('is too short (minimum is 6 characters)')
   end
 
   it 'is valid with the password including 6 characters' do
@@ -111,12 +111,12 @@ RSpec.describe User, type: :model do
   it 'is invalid with the password including 73 characters or more' do
     user.password = user.password_confirmation = 'a' * 73
     user.valid?
-    expect(user.errors[:password]).to include("is too long (maximum is 72 characters)")
+    expect(user.errors[:password]).to include('is too long (maximum is 72 characters)')
   end
 
   it "is invalid when the password doesn't matches the password_confirmation" do
-    user.password = "foobar"
-    user.password_confirmation = "foobarbaz"
+    user.password = 'foobar'
+    user.password_confirmation = 'foobarbaz'
     user.valid?
     expect(user.errors[:password_confirmation]).to include("doesn't match Password")
   end

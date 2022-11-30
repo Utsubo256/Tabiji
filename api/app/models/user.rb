@@ -9,9 +9,9 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { in: 6..127 }
   has_secure_password
 
-    private
+  private
 
-      def downcase_email
-        self.email = email.downcase
-      end
+  def downcase_email
+    self.email = email.downcase
+  end
 end
