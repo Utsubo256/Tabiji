@@ -7,3 +7,18 @@ require:
 
 AllCops:
   NewCops: enable
+
+Documentation:
+  Enabled: false
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
+
+RSpec/Rails/InferredSpecType:
+  Enabled: false
+
+RSpec/FactoryBot/SyntaxMethods:
+  Enabled: false
+
+Rails/FilePath:
+  Enabled: false
