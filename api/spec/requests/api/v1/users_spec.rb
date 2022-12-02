@@ -12,4 +12,17 @@ RSpec.describe "API::V1::Users", type: :request do
     expect(json['email']).to eq user.email
     expect(json['introduction']).to eq user.introduction
   end
+
+  it 'creates a user' do
+    expect {
+      post api_v1_signup_path, params: {
+        name: "name",
+        email: "name@example.com",
+        password: "foobar",
+        password_confirmation: "foobar"
+      }
+    }.to change(User, :count).by(1)
+
+    expect(response).to have_http_status(:created)
+  end
 end
