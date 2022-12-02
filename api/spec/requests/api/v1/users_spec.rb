@@ -16,10 +16,12 @@ RSpec.describe "API::V1::Users", type: :request do
   it 'creates a user' do
     expect {
       post api_v1_signup_path, params: {
-        name: "name",
-        email: "name@example.com",
-        password: "foobar",
-        password_confirmation: "foobar"
+        user: {
+          name: "name",
+          email: "name@example.com",
+          password: "foobar",
+          password_confirmation: "foobar"
+        }
       }
     }.to change(User, :count).by(1)
 
