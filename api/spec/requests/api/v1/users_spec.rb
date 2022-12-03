@@ -27,4 +27,19 @@ RSpec.describe "API::V1::Users", type: :request do
 
     expect(response).to have_http_status(:created)
   end
+
+  it "doesn't create a user" do
+    expect {
+      post api_v1_signup_path, params: {
+        user: {
+          name: 'a' * 16,
+          email: "#{'a' * 244}@example.com",
+          password: 'foo',
+          password_confirmation: 'a' * 128
+        }
+      }
+    }.to_not change(User, :count)
+
+    expect(response).to have_http_status(:bad_request)
+  end
 end
