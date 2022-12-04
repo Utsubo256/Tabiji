@@ -11,6 +11,8 @@ RSpec.describe "API::V1::Users", type: :request do
     expect(json['name']).to eq user.name
     expect(json['email']).to eq user.email
     expect(json['introduction']).to eq user.introduction
+
+    assert_schema_conform
   end
 
   it 'creates a user' do

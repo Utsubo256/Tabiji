@@ -32,8 +32,8 @@ paths:
         description: User identifier
         required: true
         schema:
-          type: string
-        example: '12345'
+          type: integer
+        example: 12345
       requestBody:
         content:
           'application/json': {}
