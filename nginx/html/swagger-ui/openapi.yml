@@ -54,3 +54,35 @@ paths:
                   introduction:
                     type: string
                     example: Hi, I'm Alice! I love traveling around the world!
+  /signup:
+    post:
+      description: Create a user
+      tags:
+      - users
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: bob
+                    email:
+                      type: string
+                      example: bob@example.com
+                    password:
+                      type: string
+                      example: foobar
+                    password_confirmation:
+                      type: string
+                      example: foobar
+      responses:
+        '201':
+          description: Created
+          content:
+            'application/json': {}
