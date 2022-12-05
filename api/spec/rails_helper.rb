@@ -60,4 +60,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.include Committee::Rails::Test::Methods
+  config.add_setting :committee_options
+  config.committee_options = {
+    schema_path: Rails.root.join('nginx', 'html', 'swagger-ui', 'openapi.yml').to_s,
+    prefix: '/api/v1',
+    old_assert_behavior: false
+  }
 end

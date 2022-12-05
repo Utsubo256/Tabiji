@@ -1,0 +1,88 @@
+openapi: 3.0.3
+
+info:
+  title: Tabiji
+  version: 0.1.0
+servers:
+  - url: http://localhost:{port}/api/{version}
+    description: Local development
+    variables:
+      port:
+        enum:
+          - '3000'
+        default: '3000'
+      version:
+        description: API version
+        enum:
+          - 'v1'
+        default: 'v1'
+tags:
+  - name: users
+    description: User operation
+paths:
+  /users/{userId}:
+    get:
+      description: Load a user
+      tags:
+      - users
+      deprecated: false
+      parameters:
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        schema:
+          type: integer
+        example: 12345
+      requestBody:
+        content:
+          'application/json': {}
+      responses:
+        '200':
+          description: Success operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Alice
+                  email:
+                    type: string
+                    example: alice@example.com
+                  introduction:
+                    type: string
+                    example: Hi, I'm Alice! I love traveling around the world!
+  /signup:
+    post:
+      description: Create a user
+      tags:
+      - users
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: bob
+                    email:
+                      type: string
+                      example: bob@example.com
+                    password:
+                      type: string
+                      example: foobar
+                    password_confirmation:
+                      type: string
+                      example: foobar
+      responses:
+        '201':
+          description: Created
+          content:
+            'application/json': {}

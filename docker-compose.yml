@@ -17,6 +17,7 @@ services:
       - '3000:3000'
     volumes:
       - './api:/myapp'
+      - './nginx:/myapp/nginx'
     environment:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     tty: true
