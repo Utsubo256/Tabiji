@@ -38,7 +38,6 @@ services:
     build:
       context: ./client/
       dockerfile: Dockerfile
-    # command: sh -c "npm run dev"
     ports:
       - '3001:3001'
     volumes:
