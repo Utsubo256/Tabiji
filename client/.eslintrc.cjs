@@ -5,17 +5,23 @@ module.exports = {
     },
     "extends": [
         "plugin:react/recommended",
-        "standard-with-typescript"
+        "plugin:react-hooks/recommended",
+        "airbnb",
+        "airbnb-typescript"
     ],
     "overrides": [
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
 }
