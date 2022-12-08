@@ -7,6 +7,7 @@
 # root
 # Ignore environment file
 .ENV
+.vscode/
 
 # api
 # Ignore bundler config.
