@@ -7,6 +7,7 @@
 # root
 # Ignore environment file
 .ENV
+.vscode/
 
 # api
 # Ignore bundler config.
@@ -32,3 +33,30 @@ api/tmp/storage/*
 
 # Ignore master key for decrypting credentials and more.
 api/config/master.key
+
+
+# client
+# Logs
+client/logs
+client/*.log
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+client/lerna-debug.log*
+
+client/node_modules
+client/dist
+client/dist-ssr
+client/*.local
+
+# Editor directories and files
+client/.vscode/*
+!client/.vscode/extensions.json
+client/.idea
+client/.DS_Store
+client/*.suo
+client/*.ntvs*
+client/*.njsproj
+client/*.sln
+client/*.sw?
