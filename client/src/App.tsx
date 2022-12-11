@@ -1,6 +1,10 @@
+import { AppProvider } from '@/providers/app';
+
 function App() {
   return (
-    <div>sample</div>
+    <AppProvider>
+      <div>sample</div>
+    </AppProvider>
   );
 }
 
