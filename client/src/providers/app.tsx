@@ -8,7 +8,7 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <React.Suspense>
-      <Router>{children}</Router>;
+      <Router>{children}</Router>
     </React.Suspense>
   );
 }
