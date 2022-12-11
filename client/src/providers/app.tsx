@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 type AppProviderProps = {
@@ -8,7 +9,9 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <React.Suspense>
-      <Router>{children}</Router>
+      <ChakraProvider>
+        <Router>{children}</Router>
+      </ChakraProvider>
     </React.Suspense>
   );
 }
