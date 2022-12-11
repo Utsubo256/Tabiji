@@ -1,5 +1,6 @@
 import { useRoutes } from 'react-router-dom';
 
+import { MainLayout } from '@/components/Layout';
 import { publicRoutes } from './public';
 
 export function AppRoutes() {
@@ -7,5 +8,9 @@ export function AppRoutes() {
 
   const element = useRoutes([...routes]);
 
-  return <>{element}</>;
+  return (
+    <MainLayout>
+      {element}
+    </MainLayout>
+  );
 }

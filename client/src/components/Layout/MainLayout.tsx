@@ -6,6 +6,6 @@ type MainLayoutProps = {
 
 export function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div>aaa</div>
+    <main>{children}</main>
   );
 }
