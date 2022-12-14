@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -8,7 +9,18 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { useUser } from '../api/getUser';
+
 export function Profile() {
+  const { userId } = useParams();
+  const userQuery = useUser({ userId });
+
+  if (userQuery.isLoading) {
+    return <div>is loading...</div>;
+  }
+
+  if (!userQuery.data) return null;
+
   return (
     <Center>
       <Box
@@ -29,7 +41,7 @@ export function Profile() {
                 src="https://source.unsplash.com/random"
                 alt="dog"
               />
-              <Text fontSize="lg">Utsubo</Text>
+              <Text fontSize="lg">{userQuery.data.name}</Text>
             </Stack>
             <Box px={{ base: 5, md: 100 }} py={50}>
               <Text fontSize={{ base: 'md', md: 'lg' }}>
@@ -44,9 +56,7 @@ export function Profile() {
             <Heading as="u" size={{ base: 'sm', md: 'md' }}>
               自己紹介
             </Heading>
-            <Text my={2}>
-              ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-            </Text>
+            <Text my={2}>{userQuery.data.introduction}</Text>
           </Box>
         </Stack>
       </Box>
