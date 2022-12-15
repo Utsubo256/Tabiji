@@ -77,7 +77,10 @@ export function RegisterForm() {
             </Stack>
             <Stack pt={6}>
               <Text align="center">
-                すでにアカウントをお持ちの場合 <Link to="/login" color="blue.400">ログイン</Link>
+                すでにアカウントをお持ちの場合{' '}
+                <Link to="/login" color="blue.400">
+                  ログイン
+                </Link>
               </Text>
             </Stack>
           </Stack>
