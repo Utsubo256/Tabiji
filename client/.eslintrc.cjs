@@ -28,6 +28,8 @@ module.exports = {
         "import/prefer-default-export": "off",
         "react/jsx-no-useless-fragment": "off",
         "react/jsx-props-no-spreading": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "warn",
         "import/extensions": [
             "error",
             "ignorePackages",
