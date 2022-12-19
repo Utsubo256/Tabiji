@@ -18,7 +18,17 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Link } from '@/components/Elements/Link/Link';
 
 export function RegisterForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = () => {
+    console.log({ name, email, password });
+    setName('');
+    setEmail('');
+    setPassword('');
+  };
 
   return (
     <Flex
@@ -42,16 +52,31 @@ export function RegisterForm() {
           <Stack spacing={4}>
             <FormControl id="name" isRequired>
               <FormLabel>名前</FormLabel>
-              <Input type="text" />
+              <Input
+                type="text"
+                name="user[name]"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </FormControl>
             <FormControl id="email" isRequired>
               <FormLabel>メールアドレス</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                name="user[email]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>パスワード</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  name="user[password]"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <InputRightElement h="full">
                   <Button
                     variant="ghost"
@@ -71,6 +96,7 @@ export function RegisterForm() {
                 bg="blue.400"
                 color="white"
                 _hover={{ bg: 'blue.500' }}
+                onClick={handleSubmit}
               >
                 登録する
               </Button>
