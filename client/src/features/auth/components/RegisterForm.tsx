@@ -5,7 +5,6 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Input,
   InputGroup,
   InputRightElement,
   Stack,
@@ -16,7 +15,8 @@ import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { Link } from '@/components/Elements/Link/Link';
+import { InputField } from '@/components/Form';
+import { Link } from '@/components/Elements/Link';
 
 export function RegisterForm() {
   const { register, handleSubmit, reset } = useForm();
@@ -26,12 +26,12 @@ export function RegisterForm() {
     name: string;
     email: string;
     password: string;
-  }
+  };
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
     reset();
-  }
+  };
 
   return (
     <Flex
@@ -56,24 +56,18 @@ export function RegisterForm() {
             <Stack spacing={4}>
               <FormControl id="name" isRequired>
                 <FormLabel>名前</FormLabel>
-                <Input
-                  type="text"
-                  {...register("name")}
-                />
+                <InputField type="text" registration={register('name')} />
               </FormControl>
               <FormControl id="email" isRequired>
                 <FormLabel>メールアドレス</FormLabel>
-                <Input
-                  type="email"
-                  {...register("email")}
-                />
+                <InputField type="email" registration={register('email')} />
               </FormControl>
               <FormControl id="password" isRequired>
                 <FormLabel>パスワード</FormLabel>
                 <InputGroup>
-                  <Input
+                  <InputField
                     type={showPassword ? 'text' : 'password'}
-                    {...register("password")}
+                    registration={register('password')}
                   />
                   <InputRightElement h="full">
                     <Button
