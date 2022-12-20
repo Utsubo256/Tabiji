@@ -14,21 +14,24 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Link } from '@/components/Elements/Link/Link';
 
 export function RegisterForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register, handleSubmit, reset } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = () => {
-    console.log({ name, email, password });
-    setName('');
-    setEmail('');
-    setPassword('');
-  };
+  type IFormInput = {
+    name: string;
+    email: string;
+    password: string;
+  }
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    reset();
+  }
 
   return (
     <Flex
@@ -49,67 +52,64 @@ export function RegisterForm() {
           boxShadow="lg"
           p={8}
         >
-          <Stack spacing={4}>
-            <FormControl id="name" isRequired>
-              <FormLabel>名前</FormLabel>
-              <Input
-                type="text"
-                name="user[name]"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="email" isRequired>
-              <FormLabel>メールアドレス</FormLabel>
-              <Input
-                type="email"
-                name="user[email]"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>パスワード</FormLabel>
-              <InputGroup>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={4}>
+              <FormControl id="name" isRequired>
+                <FormLabel>名前</FormLabel>
                 <Input
-                  type={showPassword ? 'text' : 'password'}
-                  name="user[password]"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="text"
+                  {...register("name")}
                 />
-                <InputRightElement h="full">
-                  <Button
-                    variant="ghost"
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg="blue.400"
-                color="white"
-                _hover={{ bg: 'blue.500' }}
-                onClick={handleSubmit}
-              >
-                登録する
-              </Button>
+              </FormControl>
+              <FormControl id="email" isRequired>
+                <FormLabel>メールアドレス</FormLabel>
+                <Input
+                  type="email"
+                  {...register("email")}
+                />
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>パスワード</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    {...register("password")}
+                  />
+                  <InputRightElement h="full">
+                    <Button
+                      variant="ghost"
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Stack spacing={10} pt={2}>
+                <Button
+                  type="submit"
+                  isLoading={false}
+                  loadingText="登録中..."
+                  size="lg"
+                  bg="blue.400"
+                  color="white"
+                  _hover={{ bg: 'blue.500' }}
+                >
+                  登録する
+                </Button>
+              </Stack>
+              <Stack pt={6}>
+                <Text align="center">
+                  すでにアカウントをお持ちの場合{' '}
+                  <Link to="/login" color="blue.400">
+                    ログイン
+                  </Link>
+                </Text>
+              </Stack>
             </Stack>
-            <Stack pt={6}>
-              <Text align="center">
-                すでにアカウントをお持ちの場合{' '}
-                <Link to="/login" color="blue.400">
-                  ログイン
-                </Link>
-              </Text>
-            </Stack>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>
