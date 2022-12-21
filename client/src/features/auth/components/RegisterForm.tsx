@@ -15,25 +15,25 @@ import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { SubmitHandler } from 'react-hook-form';
 
-import { useNavigate } from 'react-router-dom';
-import { InputField } from '@/components/Form';
+import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements/Link';
-import { Form } from '@/components/Form/Form';
 
 type RegisterValues = {
   name: string;
   email: string;
   password: string;
+  password_confirmation: string;
 };
 
 export function RegisterForm() {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
   type IFormInput = {
     name: string;
     email: string;
     password: string;
+    password_confirmation: string;
   };
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -90,6 +90,25 @@ export function RegisterForm() {
                         }
                       >
                         {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl id="password_confirmation" isRequired>
+                  <FormLabel>パスワード確認</FormLabel>
+                  <InputGroup>
+                    <InputField
+                      type={showPasswordConfirmation ? 'text' : 'password'}
+                      registration={register('password_confirmation')}
+                    />
+                    <InputRightElement h="full">
+                      <Button
+                        variant="ghost"
+                        onClick={() =>
+                          setShowPasswordConfirmation((showPasswordConfirmation) => !showPasswordConfirmation)
+                        }
+                      >
+                        {showPasswordConfirmation ? <ViewIcon /> : <ViewOffIcon />}
                       </Button>
                     </InputRightElement>
                   </InputGroup>
