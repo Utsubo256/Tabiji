@@ -6,3 +6,7 @@ export type AuthUser = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type UserResponse = {
+  user: AuthUser;
+};

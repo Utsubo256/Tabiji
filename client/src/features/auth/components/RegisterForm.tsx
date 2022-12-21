@@ -19,24 +19,19 @@ import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements/Link';
 
 type RegisterValues = {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
+  user: {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }
 };
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
-  type IFormInput = {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-  };
-
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<RegisterValues> = (data) => {
     console.log(data);
   };
 
@@ -69,18 +64,18 @@ export function RegisterForm() {
               <Stack spacing={4}>
                 <FormControl id="name" isRequired>
                   <FormLabel>名前</FormLabel>
-                  <InputField type="text" registration={register('name')} />
+                  <InputField type="text" registration={register('user.name')} />
                 </FormControl>
                 <FormControl id="email" isRequired>
                   <FormLabel>メールアドレス</FormLabel>
-                  <InputField type="email" registration={register('email')} />
+                  <InputField type="email" registration={register('user.email')} />
                 </FormControl>
                 <FormControl id="password" isRequired>
                   <FormLabel>パスワード</FormLabel>
                   <InputGroup>
                     <InputField
                       type={showPassword ? 'text' : 'password'}
-                      registration={register('password')}
+                      registration={register('user.password')}
                     />
                     <InputRightElement h="full">
                       <Button
@@ -99,7 +94,7 @@ export function RegisterForm() {
                   <InputGroup>
                     <InputField
                       type={showPasswordConfirmation ? 'text' : 'password'}
-                      registration={register('password_confirmation')}
+                      registration={register('user.password_confirmation')}
                     />
                     <InputRightElement h="full">
                       <Button
