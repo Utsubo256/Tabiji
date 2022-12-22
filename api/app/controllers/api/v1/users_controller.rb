@@ -7,7 +7,7 @@ class API::V1::UsersController < ApplicationController
       name: @user.name,
       email: @user.email,
       introduction: @user.introduction,
-      createAt: @user.created_at,
+      createdAt: @user.created_at,
       updatedAt: @user.updated_at
     }, status: :ok
   end

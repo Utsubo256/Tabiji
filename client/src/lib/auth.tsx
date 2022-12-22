@@ -2,15 +2,9 @@ import { initReactQueryAuth } from 'react-query-auth';
 
 import {
   registerWithEmailAndPassword,
-  UserResponse,
   RegisterCredentialsDTO,
   AuthUser,
 } from '@/features/auth';
-
-async function handleUserResponse(data: UserResponse) {
-  const { user } = data;
-  return user;
-}
 
 async function loadUser() {
   return null;
@@ -21,8 +15,7 @@ async function loginFn() {
 }
 
 async function registerFn(data: RegisterCredentialsDTO) {
-  const response = await registerWithEmailAndPassword(data);
-  const user = handleUserResponse(response);
+  const user = await registerWithEmailAndPassword(data);
   return user;
 }
 

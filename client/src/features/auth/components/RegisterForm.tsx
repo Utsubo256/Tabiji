@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { SubmitHandler } from 'react-hook-form';
+import { useAuth } from '@/lib/auth';
 
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements/Link';
@@ -24,16 +24,15 @@ type RegisterValues = {
     email: string;
     password: string;
     password_confirmation: string;
-  }
+  };
 };
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
 
-  const onSubmit: SubmitHandler<RegisterValues> = (data) => {
-    console.log(data);
-  };
+  const { register, isRegistering } = useAuth();
 
   return (
     <Flex
@@ -55,7 +54,9 @@ export function RegisterForm() {
           p={8}
         >
           <Form<RegisterValues>
-            onSubmit={onSubmit}
+            onSubmit={async (values) => {
+              await register(values);
+            }}
             options={{
               shouldUnregister: true,
             }}
@@ -64,11 +65,17 @@ export function RegisterForm() {
               <Stack spacing={4}>
                 <FormControl id="name" isRequired>
                   <FormLabel>名前</FormLabel>
-                  <InputField type="text" registration={register('user.name')} />
+                  <InputField
+                    type="text"
+                    registration={register('user.name')}
+                  />
                 </FormControl>
                 <FormControl id="email" isRequired>
                   <FormLabel>メールアドレス</FormLabel>
-                  <InputField type="email" registration={register('user.email')} />
+                  <InputField
+                    type="email"
+                    registration={register('user.email')}
+                  />
                 </FormControl>
                 <FormControl id="password" isRequired>
                   <FormLabel>パスワード</FormLabel>
@@ -100,10 +107,17 @@ export function RegisterForm() {
                       <Button
                         variant="ghost"
                         onClick={() =>
-                          setShowPasswordConfirmation((showPasswordConfirmation) => !showPasswordConfirmation)
+                          setShowPasswordConfirmation(
+                            (showPasswordConfirmation) =>
+                              !showPasswordConfirmation
+                          )
                         }
                       >
-                        {showPasswordConfirmation ? <ViewIcon /> : <ViewOffIcon />}
+                        {showPasswordConfirmation ? (
+                          <ViewIcon />
+                        ) : (
+                          <ViewOffIcon />
+                        )}
                       </Button>
                     </InputRightElement>
                   </InputGroup>
@@ -111,7 +125,7 @@ export function RegisterForm() {
                 <Stack spacing={10} pt={2}>
                   <Button
                     type="submit"
-                    isLoading={false}
+                    isLoading={isRegistering}
                     loadingText="登録中..."
                     size="lg"
                     bg="blue.400"
