@@ -13,17 +13,42 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useAuth } from '@/lib/auth';
+import * as z from 'zod';
 
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements/Link';
+import { useAuth } from '@/lib/auth';
+
+const schema = z
+  .object({
+    user: z.object({
+      name: z
+        .string()
+        .min(1, '名前を入力してください')
+        .max(15, '15文字以下で入力してください'),
+      email: z
+        .string()
+        .min(1, 'メールアドレスを入力してください')
+        .max(255, '255文字以下で入力してください')
+        .regex(/[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i, "doesn't match"),
+      password: z
+        .string()
+        .min(6, '6文字以上で入力してください')
+        .max(72, '72文字以下で入力してください'),
+      passwordConfirmation: z.string(),
+    }),
+  })
+  .refine((data) => data.user.password === data.user.passwordConfirmation, {
+    message: "passwords don't match",
+    path: ['user.passwordConfirmation'],
+  });
 
 type RegisterValues = {
   user: {
     name: string;
     email: string;
     password: string;
-    password_confirmation: string;
+    passwordConfirmation: string;
   };
 };
 
@@ -53,20 +78,22 @@ export function RegisterForm() {
           boxShadow="lg"
           p={8}
         >
-          <Form<RegisterValues>
+          <Form<RegisterValues, typeof schema>
             onSubmit={async (values) => {
               await register(values);
             }}
+            schema={schema}
             options={{
               shouldUnregister: true,
             }}
           >
-            {({ register }) => (
+            {({ register, formState }) => (
               <Stack spacing={4}>
                 <FormControl id="name" isRequired>
                   <FormLabel>名前</FormLabel>
                   <InputField
                     type="text"
+                    error={formState.errors.user?.name}
                     registration={register('user.name')}
                   />
                 </FormControl>
@@ -74,6 +101,7 @@ export function RegisterForm() {
                   <FormLabel>メールアドレス</FormLabel>
                   <InputField
                     type="email"
+                    error={formState.errors.user?.email}
                     registration={register('user.email')}
                   />
                 </FormControl>
@@ -82,6 +110,7 @@ export function RegisterForm() {
                   <InputGroup>
                     <InputField
                       type={showPassword ? 'text' : 'password'}
+                      error={formState.errors.user?.password}
                       registration={register('user.password')}
                     />
                     <InputRightElement h="full">
@@ -96,12 +125,13 @@ export function RegisterForm() {
                     </InputRightElement>
                   </InputGroup>
                 </FormControl>
-                <FormControl id="password_confirmation" isRequired>
+                <FormControl id="passwordConfirmation" isRequired>
                   <FormLabel>パスワード確認</FormLabel>
                   <InputGroup>
                     <InputField
                       type={showPasswordConfirmation ? 'text' : 'password'}
-                      registration={register('user.password_confirmation')}
+                      error={formState.errors.user?.passwordConfirmation}
+                      registration={register('user.passwordConfirmation')}
                     />
                     <InputRightElement h="full">
                       <Button
