@@ -30,7 +30,7 @@ const schema = z
         .string()
         .min(1, 'メールアドレスを入力してください')
         .max(255, '255文字以下で入力してください')
-        .regex(/[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i, "doesn't match"),
+        .regex(/[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i, "メールアドレスに使用できない文字が入っています"),
       password: z
         .string()
         .min(6, '6文字以上で入力してください')
@@ -39,7 +39,7 @@ const schema = z
     }),
   })
   .refine((data) => data.user.password === data.user.passwordConfirmation, {
-    message: "passwords don't match",
+    message: "パスワードが一致しません",
     path: ['user.passwordConfirmation'],
   });
 
