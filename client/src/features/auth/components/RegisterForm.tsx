@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   InputGroup,
@@ -30,7 +31,10 @@ const schema = z
         .string()
         .min(1, 'メールアドレスを入力してください')
         .max(255, '255文字以下で入力してください')
-        .regex(/[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i, "メールアドレスに使用できない文字が入っています"),
+        .regex(
+          /[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i,
+          'メールアドレスに使用できない文字が入っています'
+        ),
       password: z
         .string()
         .min(6, '6文字以上で入力してください')
@@ -39,7 +43,7 @@ const schema = z
     }),
   })
   .refine((data) => data.user.password === data.user.passwordConfirmation, {
-    message: "パスワードが一致しません",
+    message: 'パスワードが一致しません',
     path: ['user.passwordConfirmation'],
   });
 
@@ -89,26 +93,49 @@ export function RegisterForm() {
           >
             {({ register, formState }) => (
               <Stack spacing={4}>
-                <FormControl id="name" isRequired>
-                  <FormLabel>名前</FormLabel>
+                <FormControl
+                  id="name"
+                  isRequired
+                  isInvalid={!!formState.errors.user?.name}
+                >
+                  <FormLabel htmlFor="name">名前</FormLabel>
                   <InputField
+                    id="name"
                     type="text"
                     error={formState.errors.user?.name}
                     registration={register('user.name')}
                   />
+                  <FormErrorMessage>
+                    {formState.errors.user?.name?.message &&
+                      formState.errors.user?.name.message}
+                  </FormErrorMessage>
                 </FormControl>
-                <FormControl id="email" isRequired>
-                  <FormLabel>メールアドレス</FormLabel>
+                <FormControl
+                  id="email"
+                  isRequired
+                  isInvalid={!!formState.errors.user?.email}
+                >
+                  <FormLabel htmlFor="email">メールアドレス</FormLabel>
                   <InputField
+                    id="name"
                     type="email"
                     error={formState.errors.user?.email}
                     registration={register('user.email')}
                   />
+                  <FormErrorMessage>
+                    {formState.errors.user?.email?.message &&
+                      formState.errors.user?.email.message}
+                  </FormErrorMessage>
                 </FormControl>
-                <FormControl id="password" isRequired>
-                  <FormLabel>パスワード</FormLabel>
+                <FormControl
+                  id="password"
+                  isRequired
+                  isInvalid={!!formState.errors.user?.password}
+                >
+                  <FormLabel htmlFor="password">パスワード</FormLabel>
                   <InputGroup>
                     <InputField
+                      id="password"
                       type={showPassword ? 'text' : 'password'}
                       error={formState.errors.user?.password}
                       registration={register('user.password')}
@@ -124,11 +151,22 @@ export function RegisterForm() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  <FormErrorMessage>
+                    {formState.errors.user?.password?.message &&
+                      formState.errors.user?.password.message}
+                  </FormErrorMessage>
                 </FormControl>
-                <FormControl id="passwordConfirmation" isRequired>
-                  <FormLabel>パスワード確認</FormLabel>
+                <FormControl
+                  id="passwordConfirmation"
+                  isRequired
+                  isInvalid={!!formState.errors.user?.passwordConfirmation}
+                >
+                  <FormLabel htmlFor="passwordConfirmation">
+                    パスワード確認
+                  </FormLabel>
                   <InputGroup>
                     <InputField
+                      id="passwordConfirmation"
                       type={showPasswordConfirmation ? 'text' : 'password'}
                       error={formState.errors.user?.passwordConfirmation}
                       registration={register('user.passwordConfirmation')}
@@ -151,6 +189,10 @@ export function RegisterForm() {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
+                  <FormErrorMessage>
+                    {formState.errors.user?.passwordConfirmation?.message &&
+                      formState.errors.user?.passwordConfirmation.message}
+                  </FormErrorMessage>
                 </FormControl>
                 <Stack spacing={10} pt={2}>
                   <Button
