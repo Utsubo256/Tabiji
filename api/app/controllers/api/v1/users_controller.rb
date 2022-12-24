@@ -3,9 +3,12 @@ class API::V1::UsersController < ApplicationController
 
   def show
     render json: {
+      id: @user.id,
       name: @user.name,
       email: @user.email,
-      introduction: @user.introduction
+      introduction: @user.introduction,
+      createdAt: @user.created_at,
+      updatedAt: @user.updated_at
     }, status: :ok
   end
 
