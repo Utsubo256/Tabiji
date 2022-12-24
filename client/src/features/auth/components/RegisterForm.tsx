@@ -33,7 +33,7 @@ const schema = z
         .max(255, '255文字以下で入力してください')
         .regex(
           /[\w+\-.]+@[a-z\d\-.]+\.[a-z]+/i,
-          'メールアドレスに使用できない文字が入っています'
+          'フォーマットが正しくありません'
         ),
       password: z
         .string()
@@ -80,7 +80,7 @@ export function RegisterForm() {
           rounded="lg"
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow="lg"
-          p={8}
+          p={10}
         >
           <Form<RegisterValues, typeof schema>
             onSubmit={async (values) => {
