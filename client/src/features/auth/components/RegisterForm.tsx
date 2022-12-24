@@ -12,8 +12,9 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as z from 'zod';
 
 import { Form, InputField } from '@/components/Form';
@@ -61,6 +62,8 @@ export function RegisterForm() {
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
+  const navigate = useNavigate();
+
   const { register, isRegistering } = useAuth();
 
   return (
@@ -85,6 +88,7 @@ export function RegisterForm() {
           <Form<RegisterValues, typeof schema>
             onSubmit={async (values) => {
               await register(values);
+              navigate('/users');
             }}
             schema={schema}
             options={{
