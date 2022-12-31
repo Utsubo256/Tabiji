@@ -9,6 +9,14 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { in: 6..127 }
   has_secure_password
 
+  def remember(jti)
+    update_attribute(:refresh_jti, jti)
+  end
+
+  def forget
+    update_attribute(:refresh_jti, nil)
+  end
+
   private
 
   def downcase_email
