@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include TokenGenerateService
+  
   before_save :downcase_email
   validates :name, presence: true, length: { maximum: 15 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
