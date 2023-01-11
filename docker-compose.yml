@@ -20,6 +20,7 @@ services:
       - './nginx:/myapp/nginx'
     environment:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      BASE_URL: ${BASE_URL}
     tty: true
     stdin_open: true
     depends_on:

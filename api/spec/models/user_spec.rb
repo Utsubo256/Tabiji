@@ -120,4 +120,70 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:password_confirmation]).to include("doesn't match Password")
   end
+
+  describe 'RefreshToken' do
+    let!(:user) { FactoryBot.create(:user) }
+
+    context 'encode_token' do
+      before do
+        @encode = UserAuth::RefreshToken.new(user_id: user.id)
+        @lifetime = UserAuth.refresh_token_lifetime
+      end
+
+      it 'is equal to payload[:exp]' do
+        payload = @encode.payload
+        expect_lifetime = @lifetime.from_now.to_i
+        expect(expect_lifetime).to be_within(1).of(payload[:exp])
+      end
+
+      it 'is equal to payload[:jti]' do
+        payload = @encode.payload
+        encode_user = @encode.entity_for_user
+        expect_jti = encode_user.refresh_jti
+        expect(expect_jti).to eq payload[:jti]
+      end
+
+      it 'is equal to payload[:sub]' do
+        payload = @encode.payload
+        user_claim = @encode.send(:user_claim)
+        expect(@encode.user_id).to eq payload[user_claim]
+      end
+    end
+
+    context 'decode_token' do
+      include ActiveSupport::Testing::TimeHelpers
+      before do
+        @encode = UserAuth::RefreshToken.new(user_id: user.id)
+        @lifetime = UserAuth.refresh_token_lifetime
+        @decode = UserAuth::RefreshToken.new(token: @encode.token)
+        payload = @decode.payload
+      end
+
+      it 'is equal to the user' do
+        token_user = @decode.entity_for_user
+        expect(user).to eq token_user
+      end
+
+      it 'has verify_claims[:veryfy_expiration]' do
+        verify_claims = @decode.send(:verify_claims)
+        expect(verify_claims[:verify_expiration]).to be_truthy
+      end
+
+      it 'is equal to verify_claims[:algorithm]' do
+        verify_claims = @decode.send(:verify_claims)
+        expect(UserAuth.token_signature_algorithm).to eq verify_claims[:algorithm]
+      end
+
+      it 'throw an error with expired token' do
+        travel_to @lifetime.from_now do
+          expect { UserAuth::RefreshToken.new(token: @encode.token) }.to raise_error JWT::ExpiredSignature
+        end
+      end
+
+      it "throw an error when token rewritten" do
+        invalid_token = @encode.token + "a"
+        expect { UserAuth::RefreshToken.new(token: invalid_token) }.to raise_error JWT::VerificationError
+      end
+    end
+  end
 end
