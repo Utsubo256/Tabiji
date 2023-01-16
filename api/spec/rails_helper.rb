@@ -64,7 +64,7 @@ RSpec.configure do |config|
   config.include Committee::Rails::Test::Methods
   config.add_setting :committee_options
   config.committee_options = {
-    schema_path: Rails.root.join('nginx', 'html', 'swagger-ui', 'openapi.yml').to_s,
+    schema_path: Rails.root.join('doc', 'openapi.yaml').to_s,
     prefix: '/api/v1',
     old_assert_behavior: false
   }
