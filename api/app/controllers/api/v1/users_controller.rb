@@ -2,14 +2,7 @@ class API::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
   def show
-    render json: {
-      id: @user.id,
-      name: @user.name,
-      email: @user.email,
-      introduction: @user.introduction,
-      createdAt: @user.created_at,
-      updatedAt: @user.updated_at
-    }, status: :ok
+    render status: :ok
   end
 
   def create
