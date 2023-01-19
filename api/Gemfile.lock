@@ -99,6 +99,7 @@ GEM
     io-console (0.5.11)
     irb (1.5.0)
       reline (>= 0.3.0)
+    jb (0.8.0)
     json (2.6.2)
     json_schema (0.21.0)
     jwt (2.6.0)
@@ -226,6 +227,7 @@ DEPENDENCIES
   committee-rails
   debug
   factory_bot_rails
+  jb (~> 0.8.0)
   jwt (~> 2.6)
   pg (~> 1.1)
   puma (~> 5.0)
