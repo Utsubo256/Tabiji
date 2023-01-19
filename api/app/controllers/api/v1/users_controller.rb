@@ -6,12 +6,7 @@ class API::V1::UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      head :created
-    else
-      render json: { errors: user.errors.messages }, status: :bad_request
-    end
+    User.create!(user_params)
   end
 
   private

@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include API::ExceptionHandler
   include ActionController::Cookies
   include UserAuthenticateService
 
