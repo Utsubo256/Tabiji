@@ -28,7 +28,6 @@ module API::ExceptionHandler
     end
 
     def render_error(code, title, option)
-      p option
       basic_response = {
         "title": title
       }

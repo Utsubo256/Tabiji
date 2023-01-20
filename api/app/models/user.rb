@@ -8,15 +8,15 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
   validates :introduction, length: { maximum: 255 }
-  validates :password, presence: true, length: { in: 6..127 }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   has_secure_password
 
   def remember(jti)
-    update_attribute(:refresh_jti, jti)
+    update!(refresh_jti: jti)
   end
 
   def forget
-    update_attribute(:refresh_jti, nil)
+    update!(refresh_jti: nil)
   end
 
   def response_json(payload = {})
