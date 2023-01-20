@@ -12,11 +12,11 @@ class User < ApplicationRecord
   has_secure_password
 
   def remember(jti)
-    update_attribute(:refresh_jti, jti)
+    update!(refresh_jti: jti)
   end
 
   def forget
-    update_attribute(:refresh_jti, nil)
+    update!(refresh_jti: nil)
   end
 
   def response_json(payload = {})
