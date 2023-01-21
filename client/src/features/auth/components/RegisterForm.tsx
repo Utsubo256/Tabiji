@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import * as z from 'zod';
 
 import { Form, InputField } from '@/components/Form';
-import { Link } from '@/components/Elements/Link';
+import { Link } from '@/components/Elements';
 import { useAuth } from '@/lib/auth';
 
 const schema = z
