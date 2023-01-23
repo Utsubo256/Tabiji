@@ -99,7 +99,6 @@ export function RegisterForm() {
               <Stack spacing={4}>
                 <FormControl
                   id="name"
-                  // isRequired
                   isInvalid={!!formState.errors.user?.name}
                 >
                   <FormLabel htmlFor="name">名前</FormLabel>
@@ -116,7 +115,6 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="email"
-                  // isRequired
                   isInvalid={!!formState.errors.user?.email}
                 >
                   <FormLabel htmlFor="email">メールアドレス</FormLabel>
@@ -133,7 +131,6 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="password"
-                  // isRequired
                   isInvalid={!!formState.errors.user?.password}
                 >
                   <FormLabel htmlFor="password">パスワード</FormLabel>
@@ -162,7 +159,6 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="passwordConfirmation"
-                  // isRequired
                   isInvalid={!!formState.errors.user?.passwordConfirmation}
                 >
                   <FormLabel htmlFor="passwordConfirmation">

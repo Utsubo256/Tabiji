@@ -14,6 +14,7 @@ const options = {
 }
 
 export const ApiClient = applyCaseMiddleware(Axios.create({
+  withCredentials: true,
   baseURL: API_URL,
 }), options);
 

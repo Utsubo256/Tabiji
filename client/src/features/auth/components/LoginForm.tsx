@@ -6,15 +6,37 @@ import {
   Text,
   FormControl,
   FormLabel,
-  Input,
   // Checkbox,
   Button,
   useColorModeValue,
+  FormErrorMessage,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import * as z from 'zod';
 
+import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements';
+import { useAuth } from '@/lib/auth';
+
+const schema = z.object({
+  auth: z.object({
+    email: z.string().min(1, 'メールアドレスを入力してください'),
+    password: z.string().min(1, 'パスワードを入力してください'),
+  }),
+  });
+
+type LoginValues = {
+  auth: {
+    email: string;
+    password: string;
+  };
+};
 
 export function LoginForm() {
+  const navigate = useNavigate();
+
+  const { login, isLoggingIn } = useAuth();
+
   return (
     <Flex
       minH="100vh"
@@ -32,29 +54,73 @@ export function LoginForm() {
           boxShadow="lg"
           p={8}
         >
-          <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>メールアドレス</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>パスワード</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={3}>
-              {/* <Checkbox>ログイン状態を保持する</Checkbox> */}
-              <Button bg="blue.400" color="white" _hover={{ bg: 'blue.500' }}>
-                ログイン
-              </Button>
-              {/* <Link to="/signup" color="blue.400">パスワードをお忘れですか？</Link> */}
-              <Text>
-                まだアカウントをお持ちでない場合{' '}
-                <Link to="/signup" color="blue.400">
-                  ユーザー登録
-                </Link>
-              </Text>
-            </Stack>
-          </Stack>
+          <Form<LoginValues, typeof schema>
+            onSubmit={async (values) => {
+              await login(values);
+              navigate('/users');
+            }}
+            schema={schema}
+          >
+            {({ register, formState }) => (
+              <Stack spacing={4}>
+                <FormControl
+                  id="email"
+                  // isRequired
+                  isInvalid={!!formState.errors.auth?.email}
+                >
+                  <FormLabel htmlFor="email">メールアドレス</FormLabel>
+                  <InputField
+                    id="email"
+                    type="email"
+                    error={formState.errors.auth?.email}
+                    registration={register('auth.email')}
+                  />
+                  <FormErrorMessage>
+                    {formState.errors.auth?.email?.message &&
+                      formState.errors.auth?.email.message}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl
+                  id="password"
+                  // isRequired
+                  isInvalid={!!formState.errors.auth?.password}
+                >
+                  <FormLabel htmlFor="password">パスワード</FormLabel>
+                  <InputField
+                    id="password"
+                    type="password"
+                    error={formState.errors.auth?.password}
+                    registration={register('auth.password')}
+                  />
+                  <FormErrorMessage>
+                    {formState.errors.auth?.password?.message &&
+                      formState.errors.auth?.password.message}
+                  </FormErrorMessage>
+                </FormControl>
+                <Stack spacing={3}>
+                  {/* <Checkbox>ログイン状態を保持する</Checkbox> */}
+                  <Button
+                    type="submit"
+                    isLoading={isLoggingIn}
+                    loadingText="ログイン中..."
+                    size="lg"
+                    bg="blue.400"
+                    color="white"
+                    _hover={{ bg: 'blue.500' }}
+                  >
+                    ログイン
+                  </Button>
+                  {/* <Link to="/signup" color="blue.400">パスワードをお忘れですか？</Link> */}
+                  <Text>
+                    まだアカウントをお持ちでない場合{' '}
+                    <Link to="/signup" color="blue.400">
+                      ユーザー登録
+                    </Link>
+                  </Text>
+                </Stack>
+              </Stack>
+            )}
+          </Form>
         </Box>
       </Stack>
     </Flex>
