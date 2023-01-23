@@ -7,7 +7,8 @@ class API::V1::AuthTokenController < ApplicationController
   rescue_from JWT::InvalidJtiError, with: :invalid_jti
 
   before_action :authenticate, only: %i[create]
-  before_action :delete_session, only: %i[refresh destroy]
+  before_action :delete_session, only: %i[create]
+  before_action :sessionize_user, only: %i[refresh, destroy]
 
   def create
     @user = login_user
