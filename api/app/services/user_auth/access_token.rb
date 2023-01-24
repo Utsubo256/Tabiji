@@ -9,12 +9,16 @@ module UserAuth
     def initialize(user_id: nil, payload: {}, token: nil, options: {})
       if token.present?
         # decode
+        # e.g. UserAuth::AccessToken.new(token: token.token)
+        # e.g. UserAuth::AccessToken.new(token: token.token, options: {sub: token.payload[:sub]})
         @token = token
         @options = options
         @payload = JWT.decode(@token.to_s, decode_key, true, verify_claims.merge(@options)).first
         @user_id = get_user_id_from(@payload)
       else
         # encode (issue a access token)
+        # e.g. token = UserAuth::AccessToken.new(user_id: user.id)
+        # e.g. token = UserAuth::AccessToken.new(user_id: user.id, payload: {lifetime: 1.hours})
         @user_id = encrypt_for(user_id)
         @lifetime = payload[:lifetime] || UserAuth.access_token_lifetime
         @payload = claims.merge(payload.except(:lifetime))
