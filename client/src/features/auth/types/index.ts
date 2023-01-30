@@ -1,11 +1,10 @@
+import { BaseEntity } from '@/types';
+
 export type AuthUser = {
-  id: string;
   name: string;
   email: string;
-  introduction: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  introduction: string | null;
+} & BaseEntity;
 
 export type UserResponse = {
   user: AuthUser;
@@ -14,9 +13,9 @@ export type UserResponse = {
 export type LoginResponse = {
   token: string;
   expires: Date;
-  user:  {
+  user: {
     id: number;
     name: string;
     sub: string;
-  }
-}
+  };
+};
