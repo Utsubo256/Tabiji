@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -9,17 +10,36 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { useUser } from '../api/getUser';
+import { User } from '../types';
+import { getUser } from '../api/getUser';
 
 export function Profile() {
   const { userId } = useParams();
-  const userQuery = useUser({ userId });
+  const [user, setUser] = useState<User>({
+    id: 0,
+    name: '',
+    introduction: null,
+    createdAt: null,
+    updatedAt: null,
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (userQuery.isLoading) {
+  async function fetchData() {
+    setIsLoading(true);
+    const result = await getUser({ userId });
+    setUser(result);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (isLoading) {
     return <div>is loading...</div>;
   }
 
-  if (!userQuery.data) return null;
+  if (!user) return null;
 
   return (
     <Center>
@@ -41,7 +61,7 @@ export function Profile() {
                 src="https://source.unsplash.com/random"
                 alt="dog"
               />
-              <Text fontSize="lg">{userQuery.data.name}</Text>
+              <Text fontSize="lg">{user.name}</Text>
             </Stack>
             <Box px={{ base: 5, md: 100 }} py={50}>
               <Text fontSize={{ base: 'md', md: 'lg' }}>
@@ -56,7 +76,7 @@ export function Profile() {
             <Heading as="u" size={{ base: 'sm', md: 'md' }}>
               自己紹介
             </Heading>
-            <Text my={2}>{userQuery.data.introduction}</Text>
+            <Text my={2}>{user.introduction}</Text>
           </Box>
         </Stack>
       </Box>
