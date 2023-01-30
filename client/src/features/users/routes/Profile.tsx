@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -10,30 +9,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { User } from '../types';
-import { getUser } from '../api/getUser';
+import { useUser } from '../api/getUser';
 
 export function Profile() {
   const { userId } = useParams();
-  const [user, setUser] = useState<User>({
-    id: 0,
-    name: '',
-    introduction: null,
-    createdAt: null,
-    updatedAt: null,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function fetchData() {
-    setIsLoading(true);
-    const result = await getUser({ userId });
-    setUser(result);
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [{ user, isLoading }] = useUser({ userId });
 
   if (isLoading) {
     return <div>is loading...</div>;
