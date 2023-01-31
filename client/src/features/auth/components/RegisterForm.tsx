@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as z from 'zod';
 import {
   Box,
   Button,
@@ -13,13 +16,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as z from 'zod';
+
+import { useAuth } from '@/global_states/auth/useAuth';
 
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements';
-import { useAuth } from '@/lib/auth';
+
 
 const schema = z
   .object({
@@ -61,10 +63,9 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-
   const navigate = useNavigate();
 
-  const { register, isRegistering } = useAuth();
+  const [{ signup, isSigning }] = useAuth();
 
   return (
     <Flex
@@ -87,7 +88,7 @@ export function RegisterForm() {
         >
           <Form<RegisterValues, typeof schema>
             onSubmit={async (values) => {
-              await register(values);
+              await signup(values);
               navigate('/users');
             }}
             schema={schema}
@@ -197,7 +198,7 @@ export function RegisterForm() {
                 <Stack spacing={10} pt={2}>
                   <Button
                     type="submit"
-                    isLoading={isRegistering}
+                    isLoading={isSigning}
                     loadingText="登録中..."
                     size="lg"
                     bg="blue.400"

@@ -2,7 +2,7 @@ import { initReactQueryAuth } from 'react-query-auth';
 
 import {
   loginWithEmailAndPassword,
-  registerWithEmailAndPassword,
+  signupWithEmailAndPassword,
   LoginCredentialsDTO,
   RegisterCredentialsDTO,
   AuthUser,
@@ -18,7 +18,7 @@ async function loginFn(data: LoginCredentialsDTO) {
 }
 
 async function registerFn(data: RegisterCredentialsDTO) {
-  const user = await registerWithEmailAndPassword(data);
+  const user = await signupWithEmailAndPassword(data);
   return user;
 }
 
