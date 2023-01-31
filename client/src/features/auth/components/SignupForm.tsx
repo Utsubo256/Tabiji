@@ -50,7 +50,7 @@ const schema = z
     path: ['user.passwordConfirmation'],
   });
 
-type RegisterValues = {
+type SignupValues = {
   user: {
     name: string;
     email: string;
@@ -59,7 +59,7 @@ type RegisterValues = {
   };
 };
 
-export function RegisterForm() {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
@@ -86,7 +86,7 @@ export function RegisterForm() {
           boxShadow="lg"
           p={10}
         >
-          <Form<RegisterValues, typeof schema>
+          <Form<SignupValues, typeof schema>
             onSubmit={async (values) => {
               await signup(values);
               navigate('/users');

@@ -2,13 +2,13 @@ import { ApiClient } from '@/lib/apiClient';
 
 import { AuthUser } from '../types';
 
-export type RegisterCredentialsDTO = {
+export type SignupCredentialsDTO = {
   email: string;
   password: string;
 };
 
 export function signupWithEmailAndPassword(
-  data: RegisterCredentialsDTO
+  data: SignupCredentialsDTO
 ): Promise<AuthUser> {
   return ApiClient.post('/signup', data);
 }

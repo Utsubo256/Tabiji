@@ -4,7 +4,7 @@ import {
   loginWithEmailAndPassword,
   signupWithEmailAndPassword,
   LoginCredentialsDTO,
-  RegisterCredentialsDTO,
+  SignupCredentialsDTO,
   AuthUser,
 } from '@/features/auth';
 
@@ -17,7 +17,7 @@ async function loginFn(data: LoginCredentialsDTO) {
   return user;
 }
 
-async function registerFn(data: RegisterCredentialsDTO) {
+async function registerFn(data: SignupCredentialsDTO) {
   const user = await signupWithEmailAndPassword(data);
   return user;
 }
@@ -40,5 +40,5 @@ export const { AuthProvider, useAuth } = initReactQueryAuth<
   AuthUser | null,
   unknown,
   LoginCredentialsDTO,
-  RegisterCredentialsDTO
+  SignupCredentialsDTO
 >(authConfig);
