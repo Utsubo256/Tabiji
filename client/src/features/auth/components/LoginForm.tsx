@@ -14,9 +14,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 import * as z from 'zod';
 
+import { useAuth } from '@/global_states/auth/useAuth';
+
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements';
-import { useAuth } from '@/lib/auth';
 
 const schema = z.object({
   auth: z.object({
@@ -35,7 +36,7 @@ type LoginValues = {
 export function LoginForm() {
   const navigate = useNavigate();
 
-  const { login, isLoggingIn } = useAuth();
+  const [{ login, isLoggingIn }] = useAuth();
 
   return (
     <Flex

@@ -65,7 +65,7 @@ export function SignupForm() {
     useState(false);
   const navigate = useNavigate();
 
-  const [{ signup, isSigning }] = useAuth();
+  const [{ signup, isSigningUp }] = useAuth();
 
   return (
     <Flex
@@ -198,7 +198,7 @@ export function SignupForm() {
                 <Stack spacing={10} pt={2}>
                   <Button
                     type="submit"
-                    isLoading={isSigning}
+                    isLoading={isSigningUp}
                     loadingText="登録中..."
                     size="lg"
                     bg="blue.400"
