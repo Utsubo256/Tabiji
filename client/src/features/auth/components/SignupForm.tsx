@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as z from 'zod';
 import {
   Box,
   Button,
@@ -13,13 +16,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as z from 'zod';
+
+import { useAuth } from '@/global_states/auth/useAuth';
 
 import { Form, InputField } from '@/components/Form';
-import { Link } from '@/components/Elements/Link';
-import { useAuth } from '@/lib/auth';
+import { Link } from '@/components/Elements';
+
 
 const schema = z
   .object({
@@ -48,7 +50,7 @@ const schema = z
     path: ['user.passwordConfirmation'],
   });
 
-type RegisterValues = {
+type SignupValues = {
   user: {
     name: string;
     email: string;
@@ -57,14 +59,13 @@ type RegisterValues = {
   };
 };
 
-export function RegisterForm() {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-
   const navigate = useNavigate();
 
-  const { register, isRegistering } = useAuth();
+  const [{ signup, isSigningUp }] = useAuth();
 
   return (
     <Flex
@@ -85,9 +86,9 @@ export function RegisterForm() {
           boxShadow="lg"
           p={10}
         >
-          <Form<RegisterValues, typeof schema>
+          <Form<SignupValues, typeof schema>
             onSubmit={async (values) => {
-              await register(values);
+              await signup(values);
               navigate('/users');
             }}
             schema={schema}
@@ -99,7 +100,6 @@ export function RegisterForm() {
               <Stack spacing={4}>
                 <FormControl
                   id="name"
-                  isRequired
                   isInvalid={!!formState.errors.user?.name}
                 >
                   <FormLabel htmlFor="name">名前</FormLabel>
@@ -116,12 +116,11 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="email"
-                  isRequired
                   isInvalid={!!formState.errors.user?.email}
                 >
                   <FormLabel htmlFor="email">メールアドレス</FormLabel>
                   <InputField
-                    id="name"
+                    id="email"
                     type="email"
                     error={formState.errors.user?.email}
                     registration={register('user.email')}
@@ -133,7 +132,6 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="password"
-                  isRequired
                   isInvalid={!!formState.errors.user?.password}
                 >
                   <FormLabel htmlFor="password">パスワード</FormLabel>
@@ -162,7 +160,6 @@ export function RegisterForm() {
                 </FormControl>
                 <FormControl
                   id="passwordConfirmation"
-                  isRequired
                   isInvalid={!!formState.errors.user?.passwordConfirmation}
                 >
                   <FormLabel htmlFor="passwordConfirmation">
@@ -201,7 +198,7 @@ export function RegisterForm() {
                 <Stack spacing={10} pt={2}>
                   <Button
                     type="submit"
-                    isLoading={isRegistering}
+                    isLoading={isSigningUp}
                     loadingText="登録中..."
                     size="lg"
                     bg="blue.400"

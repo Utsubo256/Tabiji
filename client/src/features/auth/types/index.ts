@@ -1,12 +1,21 @@
+import { BaseEntity } from '@/types';
+
 export type AuthUser = {
-  id: string;
   name: string;
   email: string;
-  introduction: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  introduction: string | null;
+} & BaseEntity;
 
 export type UserResponse = {
   user: AuthUser;
+};
+
+export type LoginResponse = {
+  token: string;
+  expires: Date | null;
+  user: {
+    id: number;
+    name: string;
+    sub: string;
+  };
 };

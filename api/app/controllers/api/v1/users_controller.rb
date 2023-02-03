@@ -2,8 +2,6 @@ class API::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
   def show
-    p request.headers['HTTP_X_REQUESTED_WITH']
-    p request.headers['HTTP_ACCEPT']
     render status: :ok
   end
 

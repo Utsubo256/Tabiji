@@ -13,13 +13,13 @@ import { useUser } from '../api/getUser';
 
 export function Profile() {
   const { userId } = useParams();
-  const userQuery = useUser({ userId });
+  const [{ user, isLoading }] = useUser({ userId });
 
-  if (userQuery.isLoading) {
+  if (isLoading) {
     return <div>is loading...</div>;
   }
 
-  if (!userQuery.data) return null;
+  if (!user) return null;
 
   return (
     <Center>
@@ -41,7 +41,7 @@ export function Profile() {
                 src="https://source.unsplash.com/random"
                 alt="dog"
               />
-              <Text fontSize="lg">{userQuery.data.name}</Text>
+              <Text fontSize="lg">{user.name}</Text>
             </Stack>
             <Box px={{ base: 5, md: 100 }} py={50}>
               <Text fontSize={{ base: 'md', md: 'lg' }}>
@@ -56,7 +56,7 @@ export function Profile() {
             <Heading as="u" size={{ base: 'sm', md: 'md' }}>
               自己紹介
             </Heading>
-            <Text my={2}>{userQuery.data.introduction}</Text>
+            <Text my={2}>{user.introduction}</Text>
           </Box>
         </Stack>
       </Box>

@@ -8,12 +8,12 @@ module UserAuth
 
     def initialize(user_id: nil, token: nil)
       if token.present?
-        # decode
+        # decode e.g. UserAuth::RefreshToken.new(token: token1.token)
         @token = token
         @payload = JWT.decode(@token.to_s, decode_key, true, verify_claims).first
         @user_id = get_user_id_from(@payload)
       else
-        # encode (issue a token)
+        # encode (issue a token) e.g. UserAuth::RefreshToken.new(user_id: user.id)
         @user_id = encrypt_for(user_id)
         @payload = claims
         @token = JWT.encode(@payload, secret_key, algorithm, header_fields)
