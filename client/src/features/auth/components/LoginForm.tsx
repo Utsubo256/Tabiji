@@ -18,13 +18,15 @@ import { useAuth } from '@/global_states/auth/useAuth';
 
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Elements';
+import { authState } from '@/global_states/auth/authState';
+import { useRecoilState } from 'recoil';
 
 const schema = z.object({
   auth: z.object({
     email: z.string().min(1, 'メールアドレスを入力してください'),
     password: z.string().min(1, 'パスワードを入力してください'),
   }),
-  });
+});
 
 type LoginValues = {
   auth: {
@@ -37,6 +39,7 @@ export function LoginForm() {
   const navigate = useNavigate();
 
   const [{ login, isLoggingIn }] = useAuth();
+  const [auth, setAuth] = useRecoilState(authState);
 
   return (
     <Flex
@@ -57,7 +60,8 @@ export function LoginForm() {
         >
           <Form<LoginValues, typeof schema>
             onSubmit={async (values) => {
-              await login(values);
+              const accessToken = await login(values);
+              setAuth(accessToken);
               navigate('/users');
             }}
             schema={schema}
