@@ -12,7 +12,7 @@ export type UserResponse = {
 
 export type LoginResponse = {
   token: string;
-  expires: Date;
+  expires: Date | null;
   user: {
     id: number;
     name: string;

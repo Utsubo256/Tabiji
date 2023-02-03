@@ -1,6 +1,6 @@
 import { ApiClient } from '@/lib/apiClient';
 
-import { AuthUser } from '../types';
+import { LoginResponse } from '../types';
 
 export type LoginCredentialsDTO = {
   email: string;
@@ -9,6 +9,6 @@ export type LoginCredentialsDTO = {
 
 export function loginWithEmailAndPassword(
   data: LoginCredentialsDTO
-): Promise<AuthUser> {
+): Promise<LoginResponse> {
   return ApiClient.post('/auth_token', data);
 }
