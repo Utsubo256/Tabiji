@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         post :refresh, on: :collection
         delete :destroy, on: :collection
       end
+      resource :profile, only: %i[show]
     end
   end
 end
